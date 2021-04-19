@@ -1,10 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard/Dashboard';
+import { Login } from './pages/Login';
 
 function App() {
   return (
-    <div className="w-full h-screen mx-auto font-bold text-center text-blue-700 bg-blue-400">
-      Hello Homepage
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/dashboard" component={Dashboard}></Route>
+      </Switch>
+    </Router>
   );
 }
 
