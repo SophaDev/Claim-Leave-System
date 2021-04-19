@@ -2,13 +2,19 @@
   "name": "leave-system",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 4200",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "@types/lodash": "^4.14.168",
+    "@types/react-router-dom": "^5.1.7",
+    "antd": "^4.15.0",
+    "axios": "^0.21.1",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
