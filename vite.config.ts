@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       components: path.resolve(__dirname, './src/components'),
       pages: path.resolve(__dirname, './src/pages'),
+      containers: path.resolve(__dirname, './src/containers'),
     },
   },
   plugins: [reactRefresh()],
