@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { Table, Popconfirm, Button, Modal, Input, Form } from 'antd';
+import { Popconfirm, Table, Form, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Update } from './Update';
+import { UpdateCompany } from './UpdateCompany';
+import { DeleteIcon } from '../../components/Icons/DeleteIcon';
+import { AddCompany } from './AddCompany';
 
-const Company: React.FC<{ record: any }> = ({ record: any }) => {
+const Company: React.FC<{ record: any; id: any }> = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -12,35 +14,22 @@ const Company: React.FC<{ record: any }> = ({ record: any }) => {
   const apiUrl =
     'http://114.119.182.183:8080/ClaimRest/company/list?offset=0&max=10';
   useEffect(() => {
-    setIsLoading(false);
-    const fetchData = async () => {
+    const getCompany = async () => {
       const result = await axios(apiUrl);
       setData(result.data.results);
-      setIsLoading(false);
     };
-    fetchData();
+    getCompany();
   }, []);
 
-  const saveCompany = (e: any) => {
-    console.log(e, 'eee');
+  const handleDelete = (id: any) => {
     axios
-      .post('http://114.119.182.183:8080/ClaimRest/company', { ...e })
+      .put('http://114.119.182.183:8080/ClaimRest/company/' + id, {
+        status: false,
+      })
       .then((results) => {
-        console.log(results, 'resultsAddPost');
-        history.push('/app/company' + results);
-        console.log(results, 'results');
+        console.log(results, 'DeleteResults');
       })
       .catch((error) => setIsLoading(false));
-  };
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-  const handleOk = (value: any) => {
-    setIsModalVisible(false);
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
   };
   const columns = [
     {
@@ -51,91 +40,43 @@ const Company: React.FC<{ record: any }> = ({ record: any }) => {
     {
       title: 'Name English',
       dataIndex: 'companyNameEn',
+      width: '30%',
     },
     {
       title: 'Name Khmer',
       dataIndex: 'companyNameKh',
+      width: '30%',
     },
     {
       title: 'Action',
       dataIndex: 'id',
+      width: '30%',
       render: (id: string, record: any) => (
         <div className="flex flex-row items-center space-x-3">
-          <Update record={record} id={id} />
+          <UpdateCompany id={id} record={record} />
           <Popconfirm
             title="Do you want to delete this record?"
-            // onConfirm={() => handleDelete}
-            // onConfirm={() => deleteProduct(data._id)}
+            onConfirm={() => handleDelete(id)}
           >
-            <a>Delete</a>
+            <div>
+              <DeleteIcon />
+            </div>
           </Popconfirm>
         </div>
       ),
     },
   ];
-  console.log(data, 'data');
+
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Add New
-      </Button>
+      <AddCompany />
       <Table
         loading={isLoading}
         columns={columns}
         bordered={true}
         dataSource={data}
       />
-      <Modal
-        title="Add New Company"
-        visible={isModalVisible}
-        onOk={() => form.submit()}
-        onCancel={handleCancel}
-      >
-        <Form
-          onFinish={saveCompany}
-          form={form}
-          action=""
-          method="post"
-          className="form-horizontal"
-        >
-          <Form.Item
-            label="Name English"
-            name="companyNameEn"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Company Name English!',
-              },
-            ]}
-          >
-            <Input
-              type="text"
-              name="companyNameEn"
-              id="companyNameEn"
-              placeholder="Company Name English"
-            />
-          </Form.Item>
-          <Form.Item
-            label="Name Khmer"
-            name="companyNameKh"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Company Name Khmer!',
-              },
-            ]}
-          >
-            <Input
-              type="text"
-              name="companyNameKh"
-              id="companyNameKh"
-              placeholder="Company Name Khmer"
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
-
 export default Company;

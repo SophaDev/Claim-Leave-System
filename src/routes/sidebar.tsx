@@ -28,6 +28,11 @@ const routes = [
         path: '/app/employee',
         name: 'Employee',
       },
+
+      {
+        path: '/app/approval-level',
+        name: 'Approval Level',
+      },
     ],
   },
   {
