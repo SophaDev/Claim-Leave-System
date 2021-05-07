@@ -28,9 +28,16 @@ const routes = [
         path: '/app/employee',
         name: 'Employee',
       },
-
       {
-        path: '/app/approval-level',
+        path: '/app/management',
+        name: 'Team Management',
+      },
+      {
+        path: '/app/leave-type',
+        name: 'Leave Type',
+      },
+      {
+        path: '/app/approval',
         name: 'Approval Level',
       },
     ],

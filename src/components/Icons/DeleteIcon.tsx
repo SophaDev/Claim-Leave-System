@@ -3,7 +3,7 @@ import React from 'react';
 export const DeleteIcon: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-6 h-6 text-red-600 fill-current"
+    className="w-6 h-6 text-red-600"
     viewBox="0 0 20 20"
     fill="currentColor"
   >

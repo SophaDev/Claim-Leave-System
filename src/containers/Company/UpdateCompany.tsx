@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Input, Form } from 'antd';
 import axios from 'axios';
+import { EditIcon } from '../../components/Icons/EditIcon';
 
 export const UpdateCompany: React.FC<{ record: any; id: any }> = ({
   record,
@@ -12,6 +13,7 @@ export const UpdateCompany: React.FC<{ record: any; id: any }> = ({
 
   const updateCompany = (e: any) => {
     setIsModalVisible(false);
+    handleCancel();
     axios
       .put('http://114.119.182.183:8080/ClaimRest/company/' + id, { ...e })
       .then((results) => {
@@ -34,9 +36,11 @@ export const UpdateCompany: React.FC<{ record: any; id: any }> = ({
   console.log(record, 'record');
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Edit
-      </Button>
+      <a onClick={showModal}>
+        <i title="Edit Company" className="fa fa-edit text-primary">
+          <EditIcon />
+        </i>
+      </a>
       <Modal
         title="Update Company"
         visible={isModalVisible}

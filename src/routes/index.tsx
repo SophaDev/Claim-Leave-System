@@ -3,7 +3,9 @@ const Dashboard = lazy(() => import('../containers/Dashboard'));
 const Company = lazy(() => import('../containers/Company'));
 const Team = lazy(() => import('../containers/Team'));
 const Employee = lazy(() => import('../containers/Employee'));
-const ApprovalLevel = lazy(() => import('../containers/ApprovalLevel'));
+const LeaveType = lazy(() => import('../containers/LeaveType'));
+const TeamManagement = lazy(() => import('../containers/TeamManagement'));
+const Approval = lazy(() => import('../containers/ApprovalLevel'));
 
 const routes = [
   {
@@ -23,8 +25,16 @@ const routes = [
     component: Employee,
   },
   {
-    path: '/approval-level',
-    component: ApprovalLevel,
+    path: '/management',
+    component: TeamManagement,
+  },
+  {
+    path: '/leave-type',
+    component: LeaveType,
+  },
+  {
+    path: '/approval',
+    component: Approval,
   },
 ];
 
