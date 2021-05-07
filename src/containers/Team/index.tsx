@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Popconfirm, Table, Form, Button } from 'antd';
+import { Popconfirm, Table } from 'antd';
 import axios from 'axios';
 import { DeleteIcon } from '../../components/Icons/DeleteIcon';
+import AddTeam from './AddTeam';
+import UpdateTeam from './UpdateTeam';
 
-const Team: React.FC = () => {
+const Team: React.FC<{ record: any; id: any }> = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
+
   const apiUrl =
     'http://114.119.182.183:8080/ClaimRest/team/list?offset=0&max=10';
   useEffect(() => {
@@ -17,6 +18,17 @@ const Team: React.FC = () => {
     };
     getTeam();
   }, []);
+
+  const handleDelete = (id: any) => {
+    axios
+      .put('http://114.119.182.183:8080/ClaimRest/team/' + id, {
+        status: false,
+      })
+      .then((results) => {
+        console.log(results, 'DeleteResults');
+      })
+      .catch((error) => setIsLoading(false));
+  };
 
   const columns = [
     {
@@ -30,23 +42,21 @@ const Team: React.FC = () => {
     {
       title: 'Team Name Khmer',
       dataIndex: 'teamNameKh',
-      width: '30%',
     },
     {
       title: 'Company',
-      dataIndex: 'companyNameEn',
+      dataIndex: ['company', 'companyNameEn'],
     },
-
     {
       title: 'Action',
       dataIndex: 'id',
 
       render: (id: string, record: any) => (
         <div className="flex flex-row items-center space-x-3">
-          <Button type="primary">Edit</Button>
+          <UpdateTeam id={id} record={record} />
           <Popconfirm
             title="Do you want to delete this record?"
-            // onConfirm={() => handleDelete(id)}
+            onConfirm={() => handleDelete(id)}
           >
             <div>
               <DeleteIcon />
@@ -56,9 +66,10 @@ const Team: React.FC = () => {
       ),
     },
   ];
-  console.log(data, 'data');
+
   return (
     <div>
+      <AddTeam />
       <Table
         loading={isLoading}
         columns={columns}

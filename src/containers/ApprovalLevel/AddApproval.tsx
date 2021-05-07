@@ -1,34 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Input, Form } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
 import axios from 'axios';
 
-export const AddCompany: React.FC = () => {
-  const [data, setData] = useState([]);
+export const AddApproval: React.FC = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  // const apiUrl =
-  //   'http://114.119.182.183:8080/ClaimRest/company/list?offset=0&max=10';
-  // useEffect(() => {
-  //   const getCompany = async () => {
-  //     const result = await axios(apiUrl);
-  //     setData(result.data.results);
-  //   };
-  //   getCompany();
-  // }, []);
-
-  const saveCompany = (e: any) => {
-    setIsModalVisible(false);
+  const addApproval = (e: any) => {
     handleCancel();
     axios
-      .post('http://114.119.182.183:8080/ClaimRest/company', { ...e })
+      .post('http://114.119.182.183:8080/ClaimRest/approvalLevel', { ...e })
       .then((results) => {
-        console.log(results, 'resultsAddPost');
-        history.push('/app/company' + results);
+        console.log(results);
+        history.push('/app/approval' + results);
       })
       .catch((error) => setIsLoading(false));
   };
+
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
@@ -36,57 +26,61 @@ export const AddCompany: React.FC = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+
   return (
     <div>
       <Button type="primary" onClick={showModal}>
         Add New
       </Button>
+
       <Modal
-        title="Add New Company"
+        title="Add New Approval Level"
         visible={isModalVisible}
         onOk={() => form.submit()}
         onCancel={handleCancel}
       >
         <Form
-          onFinish={saveCompany}
+          layout="vertical"
+          onFinish={addApproval}
           form={form}
           action=""
           method="post"
           className="form-horizontal"
         >
           <Form.Item
-            label="Name English"
-            name="companyNameEn"
+            label="Level Name"
+            name="levelName"
             rules={[
               {
                 required: true,
-                message: 'Please input your Company Name English!',
+                message: 'Please input your level name!',
               },
             ]}
           >
             <Input
               type="text"
-              name="companyNameEn"
-              id="companyNameEn"
-              placeholder="Company Name English"
+              name="levelName"
+              placeholder="Enter Level Name"
             />
           </Form.Item>
           <Form.Item
-            label="Name Khmer"
-            name="companyNameKh"
+            label="Level Number"
+            name="levelNumber"
             rules={[
               {
                 required: true,
-                message: 'Please input your Company Name Khmer!',
+                message: 'Please input Leave number day!',
               },
             ]}
           >
             <Input
               type="text"
-              name="companyNameKh"
-              id="companyNameKh"
-              placeholder="Company Name Khmer"
+              name="levelNumber"
+              placeholder="Enter Level Number"
             />
+          </Form.Item>
+          <Form.Item label="Description" name="description">
+            <TextArea rows={4} placeholder="description" />
           </Form.Item>
         </Form>
       </Modal>

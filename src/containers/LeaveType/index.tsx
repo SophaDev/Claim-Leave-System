@@ -1,30 +1,31 @@
-import axios from 'axios';
-import { Popconfirm, Table, Form, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { UpdateCompany } from './UpdateCompany';
+import axios from 'axios';
+import { Table, Popconfirm } from 'antd';
 import { DeleteIcon } from '../../components/Icons/DeleteIcon';
-import { AddCompany } from './AddCompany';
+import { AddLeaveType } from './AddLeaveType';
+import { UpdateLeaveType } from './UpdateLeaveType';
 
-const Company: React.FC<{ record: any; id: any }> = () => {
+const LeaveType: React.FC = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const apiUrl =
-    'http://114.119.182.183:8080/ClaimRest/company/list?offset=0&max=10';
+    'http://114.119.182.183:8080/ClaimRest/permissionType/list?offset=0&max=10';
   useEffect(() => {
-    const getCompany = async () => {
+    const getAllLeaveType = async () => {
       const result = await axios(apiUrl);
       setData(result.data.results);
     };
-    getCompany();
+    getAllLeaveType();
   }, []);
 
   const handleDelete = (id: any) => {
     axios
-      .put('http://114.119.182.183:8080/ClaimRest/company/' + id, {
+      .put('http://114.119.182.183:8080/ClaimRest/permissionType/' + id, {
         status: false,
       })
       .then((results) => {
-        console.log(results, 'DeleteResults');
+        console.log(results);
       })
       .catch((error) => setIsLoading(false));
   };
@@ -32,25 +33,26 @@ const Company: React.FC<{ record: any; id: any }> = () => {
     {
       title: 'No.',
       dataIndex: 'id',
-      width: '10%',
     },
     {
-      title: 'Name English',
-      dataIndex: 'companyNameEn',
-      width: '30%',
+      title: 'Permission Type',
+      dataIndex: 'name',
     },
     {
-      title: 'Name Khmer',
-      dataIndex: 'companyNameKh',
-      width: '30%',
+      title: 'Number of day',
+      dataIndex: 'numberLeaveDay',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      width: '40%',
     },
     {
       title: 'Action',
       dataIndex: 'id',
-      width: '30%',
       render: (id: string, record: any) => (
         <div className="flex flex-row items-center space-x-3">
-          <UpdateCompany id={id} record={record} />
+          <UpdateLeaveType id={id} record={record} />
           <Popconfirm
             title="Do you want to delete this record?"
             onConfirm={() => handleDelete(id)}
@@ -63,10 +65,9 @@ const Company: React.FC<{ record: any; id: any }> = () => {
       ),
     },
   ];
-
   return (
     <div>
-      <AddCompany />
+      <AddLeaveType />
       <Table
         loading={isLoading}
         columns={columns}
@@ -76,4 +77,4 @@ const Company: React.FC<{ record: any; id: any }> = () => {
     </div>
   );
 };
-export default Company;
+export default LeaveType;
